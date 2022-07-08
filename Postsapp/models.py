@@ -32,7 +32,7 @@ on_delete=models.CASCADE, db_column="parents_post_id")
 # show_nickname	varchar(100)	not null		
     show_nickname=models.CharField(max_length=20)
 
-class Images(models.Model):
+# class Images(models.Model):
 # # id	    int(11)	    not null	auto_increment	primary key
 # # src	    varchar(100)not null
     
