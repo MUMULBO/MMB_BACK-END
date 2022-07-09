@@ -21,7 +21,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Postsapp',
     'Usersapp',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
+
+REST_FRAMEWORK = {    
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',]              
+}
+
+AUTH_USER_MODEL = 'Usersapp.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -35,10 +44,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
