@@ -1,10 +1,9 @@
 from email.policy import default
 from django.db import models
-from django.forms import CharField, DateField
 
 class Majors(models.Model):
     # id	int(11)	    not null	auto_increment	primary key
-    name=models.CharField(max_length=20)	
+    name=models.CharField(max_length=20,null=True, default='')	
 
 class Posts(models.Model):
 # id	int(11)	not null	auto_increment	primary key

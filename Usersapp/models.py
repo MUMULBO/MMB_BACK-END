@@ -2,6 +2,7 @@ from platform import release
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
 
+
 class UserManager(BaseUserManager):
     def create_user(self, email, nickname, password=None):
         user=self.model(
@@ -24,11 +25,11 @@ class UserManager(BaseUserManager):
     
     
 class User(AbstractBaseUser):
-    group_id=models.IntegerField()
-    nickname=models.CharField(max_length=20, default='',unique=True)
-    email=models.CharField(max_length=20, unique=True)    
-    point=models.IntegerField()
-    major_id=models.ForeignKey("Postsapp.Majors", related_name="majors_id", on_delete=models.CASCADE, db_column="major_id")
+    group_id=models.IntegerField(null=True)
+    nickname=models.CharField(max_length=20, default='',unique=True,null=True)
+    email=models.CharField(max_length=20, unique=True,null=True)    
+    point=models.IntegerField(null=True)
+    major_id=models.ForeignKey("Postsapp.Majors", related_name="majors_id", on_delete=models.CASCADE, db_column="major_id", null=True)
     
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
