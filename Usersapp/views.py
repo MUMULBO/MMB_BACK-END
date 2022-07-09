@@ -14,16 +14,17 @@ class Accounts(APIView):
         if request.method=="POST":
             data=request.POST
             if User.objects.filter(email=data['email']).exists():
-                return render(request, 'Usersapp/badlogin.html')
+                return render(request, 'Usersapp/badlogin.html', {'isDuplicated':True})
             user=User.objects.create_user(
                 email=data['email'],
                 password=data['password'],
                 nickname=data['nickname'],
+                major_id=data['major_id'],
             )
             if user is not None:
                 auth.login(request, user)            
                 token=Token.objects.create(user=user)
-                return render(request, 'Postsapp/index.html',{'Token':token.key})        
+                return render(request, 'Postsapp/index.html',{'isLogin':True})        
         return render(request, 'Usersapp/signup.html', {'form':form})
 
     def Login(request):
@@ -36,7 +37,7 @@ class Accounts(APIView):
             if user is not None:
                 token=Token.objects.get(user=user)
                 auth.login(request, user)
-                return render(request, 'Postsapp/index.html',{"Token":token.key})
+                return render(request, 'Postsapp/index.html',{"Token":token.key, "isLogin":True})
         return render(request, 'Usersapp/login.html',{'form':form})
     
     def Logout(request):
