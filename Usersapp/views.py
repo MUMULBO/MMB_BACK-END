@@ -1,8 +1,9 @@
-from operator import ge
 from django.shortcuts import redirect, render
 from .forms import CreateUserForm, UserForm
 from django.contrib import auth
 from rest_framework.views import APIView
+# from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+# from serializers import UserSerializer
 from rest_framework.authtoken.models import Token
 from Usersapp.models import User
 
@@ -41,3 +42,16 @@ class Accounts(APIView):
     def Logout(request):
         auth.logout(request)
         return redirect('/')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

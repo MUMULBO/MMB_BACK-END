@@ -1,6 +1,4 @@
 /my_setting.py
 /myvenv
-/Mudata
-
-/usersapp/migrations
-/postsapp/migrations
+/Mudata\
+migrations

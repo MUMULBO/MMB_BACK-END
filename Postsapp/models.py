@@ -1,14 +1,12 @@
-from email.policy import default
 from django.db import models
 
 class Majors(models.Model):
     # id	int(11)	    not null	auto_increment	primary key
     name=models.CharField(max_length=20,null=True, default='')	
-
 class Posts(models.Model):
 # id	int(11)	not null	auto_increment	primary key
 # major_id	int(11)	not null		foreign key
-    major_id=major_id=models.ForeignKey("Majors", related_name="majors", 
+    major_id=models.ForeignKey("Majors", related_name="majors", 
 on_delete=models.CASCADE, db_column="major_id")
 # user_id	int(11)	not null		foreign key
     user_id=models.ForeignKey("Usersapp.User", related_name="users", 
