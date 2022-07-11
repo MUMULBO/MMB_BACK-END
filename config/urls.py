@@ -18,5 +18,11 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
+    path('',views.home, name='home'),
+    path('Usersapp/',include('Usersapp.urls')),
+    path('Postsapp/',include('Postsapp.urls')),
+=======
     path('authapp/', include('Authapp.urls'))
+>>>>>>> upstream/develop
 ]
