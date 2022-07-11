@@ -63,8 +63,7 @@ class LogIn(APIView):
             user = User.objects.get(email = request_email)
             
             if bcrypt.checkpw(request_password.encode('utf-8'), user.password.encode('utf-8')) :
-                print(request_password.encode('utf-8'))
-                print(user.password.encode('utf-8'))
+
                 return Response(status=status.HTTP_200_OK)
             return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_400_BAD_REQUEST)
