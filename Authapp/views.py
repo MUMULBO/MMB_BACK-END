@@ -10,6 +10,9 @@ import random
 from django.contrib import auth
 from .models import User
 from . import serializers
+from Postsapp.models import Majors
+from argon2 import PasswordHasher
+import bcrypt
 
 class NickCheck(APIView):
     def post(self, request):
@@ -38,33 +41,34 @@ class EmailCheck(APIView):
 
 class SignUp(APIView):
     def post(self, request):
-        serializer = serializers.UserSerializer(data = request.data)
-        data = {}
-        if serializer.is_valid():
-            account = serializer.save()
-            data['response'] = "successfully registred a new user"
-            data['email'] = account.email
-            data['nickname'] = account.nickname
-            data['major_id'] = account.major_id
-            token = Token.objects.get(user=account).key
-            data['token'] = token
-        else:
-            data = serializer.errors
-        return Response(data)
+        major = Majors.objects.get(id=request.data['major_id'])
+        if major:
+            user = User.objects.create_user(
+                email = request.data['email'] + '@kumoh.ac.kr',
+                password = request.data['password'],
+                nickname = request.data['nickname'],
+                major_id = major,
+            )
+        if user is not None:
+            Token.objects.create(user = user)
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
+class LogIn(APIView):
+    def post(self, request):
+        request_email = request.data['email']
+        request_password = request.data['password']
 
-        # user=User.objects.create_user(
-        #     email=request.data['email'],
-        #     password=request.data['password'],
-        #     nickname=request.data['nickname'],
-        #     # major_id=request.data['major_id'],
-        # )
-        
-        # if user is not None:
-        #     auth.login(request, user)   
-        #     Token.objects.create(user=user)
-        #     return Response(status=status.HTTP_200_OK)
-        # return Response(status=status.HTTP_400_BAD_REQUEST)
+        if User.objects.filter(email = request_email).exists():
+            user = User.objects.get(email = request_email)
+            
+            if bcrypt.checkpw(request_password.encode('utf-8'), user.password.encode('utf-8')) :
+                print(request_password.encode('utf-8'))
+                print(user.password.encode('utf-8'))
+                return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
