@@ -1,3 +1,4 @@
+from operator import mod
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser)
 
@@ -8,8 +9,8 @@ class UserManager(BaseUserManager):
             email=email,
             nickname=nickname,
             major_id = major_id,
+            password=password
         )
-        user.set_password(password)
         user.save(using=self._db)
         return user
         
@@ -22,14 +23,12 @@ class UserManager(BaseUserManager):
         u.save(using=self._db)
         return u
         
-    
-    
 class User(AbstractBaseUser):
     nickname=models.CharField(max_length=20, default='',unique=True,null=True)
     email=models.CharField(max_length=20, unique=True,null=True)    
     point=models.IntegerField(null=True)
-    stacked_point=models.IntegerField(null=True)
     major_id=models.ForeignKey("Postsapp.Majors", related_name="majors_id", on_delete=models.CASCADE, db_column="major_id", null=True)
+    token=models.TextField(max_length=255,null=True)
     
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
