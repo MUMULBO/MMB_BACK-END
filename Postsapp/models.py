@@ -9,7 +9,7 @@ class Posts(models.Model):
     #foreignkey
     major_id=models.ForeignKey("Majors", related_name="majors", 
 on_delete=models.CASCADE, db_column="major_id", null=True)
-    user_id=models.ForeignKey("Usersapp.User", related_name="users", 
+    user_id=models.ForeignKey("Authapp.User", related_name="users", 
 on_delete=models.CASCADE, db_column="user_id", null=True)
     #userfield
     title=models.TextField()
@@ -25,7 +25,7 @@ on_delete=models.CASCADE, db_column="user_id", null=True)
 class Comments(models.Model):
     post_id = models.ForeignKey("Postsapp.Posts", related_name="fk_comment_post", 
                             on_delete=models.CASCADE, db_column="post_id", null=True)
-    user_id = models.ForeignKey("Usersapp.User", related_name="fk_comment_user",
+    user_id = models.ForeignKey("Authapp.User", related_name="fk_comment_user",
                                 on_delete=models.CASCADE, db_column="user_id",null=True)
     description = models.TextField()
     created_time = models.DateTimeField(auto_now_add=True)

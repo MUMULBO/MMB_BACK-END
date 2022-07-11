@@ -4,15 +4,14 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from django.http import Http404
+
 from django.core.mail import EmailMessage
 import random
 from django.contrib import auth
 from .models import User
 from . import serializers
 from Postsapp.models import Majors
-from argon2 import PasswordHasher
-import bcrypt
+
 
 class NickCheck(APIView):
     def post(self, request):
@@ -41,18 +40,12 @@ class EmailCheck(APIView):
 
 class SignUp(APIView):
     def post(self, request):
-        major = Majors.objects.get(id=request.data['major_id'])
-        if major:
-            user = User.objects.create_user(
-                email = request.data['email'] + '@kumoh.ac.kr',
-                password = request.data['password'],
-                nickname = request.data['nickname'],
-                major_id = major,
-            )
-        if user is not None:
-            Token.objects.create(user = user)
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        major=Majors.objects.get(id=request.data['major_id'])        
+        user=User.objects.create_user(email=request.data['email'], password=request.data['password'], 
+major_id=major,nickname=request.data['nickname'])
+        user.save()
+        return Response(status=status.HTTP_200_OK)
+        
 
 class LogIn(APIView):
     def post(self, request):
@@ -61,11 +54,11 @@ class LogIn(APIView):
 
         if User.objects.filter(email = request_email).exists():
             user = User.objects.get(email = request_email)
-            
-            if bcrypt.checkpw(request_password.encode('utf-8'), user.password.encode('utf-8')) :
+            token=Token.objects.create(user=user)
+            user.token=token
+            user.save() 
+            return Response({'token':token}, status.HTTP_200_OK)
 
-                return Response(status=status.HTTP_200_OK)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

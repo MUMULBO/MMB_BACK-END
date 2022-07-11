@@ -39,24 +39,23 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Authapp',
-    'Commentsapp',
-    'Imagesapp',
     'Postsapp',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+    'allauth',
 ]
 
 
 REST_FRAMEWORK = {    
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',],
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',],
     'DEFAULT_FILTER_BACKENDS': 
         ['django_filters.rest_framework.DjangoFilterBackend',]              
     
 }
 
-AUTH_USER_MODEL = 'Usersapp.User'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -157,3 +156,5 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 AUTH_USER_MODEL = 'Authapp.User'
 
 APPEND_SLASH=False
+
+REST_USE_JWT = True
