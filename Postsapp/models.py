@@ -1,37 +1,34 @@
 from django.db import models
 
+
 class Majors(models.Model):
     # id	int(11)	    not null	auto_increment	primary key
     name=models.CharField(max_length=20,null=True, default='')	
-class Posts(models.Model):
-# id	int(11)	not null	auto_increment	primary key
-# major_id	int(11)	not null		foreign key
-    major_id=models.ForeignKey("Majors", related_name="majors", 
-on_delete=models.CASCADE, db_column="major_id")
-# user_id	int(11)	not null		foreign key
-    user_id=models.ForeignKey("Usersapp.User", related_name="users", 
-on_delete=models.CASCADE, db_column="user_id")
-# parents_post	int(11)	not null		foreign key
-    parents_post_id=models.ForeignKey('self' ,related_name="parents_post", 
-on_delete=models.CASCADE, db_column="parents_post_id")
-# title	varchar(100)	null
-    title=models.TextField()
-# description	text	not null
-    description=models.TextField()
-# created_time	datetime	not null
-    created_time=models.DateTimeField(auto_now_add=True)
-# post_point	int	not null
-    post_point=models.IntegerField()
-# is_selected	boolean	not null
-    is_selcted=models.BooleanField(default=False)
-# is_anony	boolean	not null	
-    is_anony=models.BooleanField(default=True)
-# show_nickname	varchar(100)	not null		
-    show_nickname=models.CharField(max_length=20)
 
-# class Images(models.Model):
-# # id	    int(11)	    not null	auto_increment	primary key
-# # src	    varchar(100)not null
+class Posts(models.Model):
+    #foreignkey
+    major_id=models.ForeignKey("Majors", related_name="majors", 
+on_delete=models.CASCADE, db_column="major_id", null=True)
+    user_id=models.ForeignKey("Usersapp.User", related_name="users", 
+on_delete=models.CASCADE, db_column="user_id", null=True)
+    #userfield
+    title=models.TextField()
+    description=models.TextField()
+    created_time=models.DateTimeField(auto_now_add=True)
+    post_point=models.IntegerField()
+    is_selcted=models.BooleanField(default=False)
+    is_anony=models.BooleanField(default=True)	
+    show_nickname=models.CharField(max_length=20, null=True)
+    image_src=models.CharField(max_length=30, null=True)
+    token=models.CharField(max_length=30, null=True)
     
-# # post_id	int(11)	    not null	foreign key
-# # order	    int(11)	    not null
+class Comments(models.Model):
+    post_id = models.ForeignKey("Postsapp.Posts", related_name="fk_comment_post", 
+                            on_delete=models.CASCADE, db_column="post_id", null=True)
+    user_id = models.ForeignKey("Usersapp.User", related_name="fk_comment_user",
+                                on_delete=models.CASCADE, db_column="user_id",null=True)
+    description = models.TextField()
+    created_time = models.DateTimeField(auto_now_add=True)
+    is_selected = models.BooleanField(default=False)
+    is_anony = models.BooleanField(default=False)
+    token=models.CharField(max_length=30, null=True)
