@@ -58,6 +58,7 @@ class LogIn(APIView):
             user.token=token
             user.save() 
             return Response({'token':token}, status.HTTP_200_OK)
+
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
